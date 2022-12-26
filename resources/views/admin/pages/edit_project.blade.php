@@ -1,0 +1,119 @@
+<?php
+use Illuminate\Support\Facades\Session;
+?>
+@extends('layouts.dashboard')
+
+@section('content')
+<!--main content start-->
+
+
+<section id="main-content">
+    <section class="wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header"><i class="fa fa-edit"></i>Edit Book</h3>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="/dashboard/home">Home</a></li>
+                    <li><i class="fa fa-question"></i>Book</li>
+                    <li><i class="fa fa-plus"></i>Edit</li>
+                </ol>
+            </div>
+        </div>
+
+
+        <!-- edit-profile -->
+        <div id="edit-profile" class="tab-pane">
+            <section class="panel">
+                <div class="panel-body bio-graph-info">
+                    @if (session()->has('errors'))
+                    @foreach ($errors as $error)
+                    {{$error}}
+                    @endforeach
+                    @endif
+                    @if(\Session::has('message'))
+
+                    <p class="alert
+      {{ Session::get('alert-class', 'alert-success') }}">{{Session::get('message') }}</p>
+
+                    @endif
+                    @if($project)
+                    <form class="form-horizontal" method="POST" action="{{route('project.update', $project->id)}}"
+                        enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Book Name</label>
+                            <div class="col-lg-10">
+                                <input name="name" value="{{$project->name}}" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Project category</label>
+                            <div class="col-lg-10">
+                                <select name="category_id" class="form-control">
+                                    @foreach($categories as $category)
+                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Book Author</label>
+                            <div class="col-lg-10">
+                                <input name="author" value="{{$project->author}}" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Book Image</label>
+                            <div class="col-lg-10">
+                                <input type="file" name="image" class="form-control" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Book description</label>
+                            <div class="col-lg-10">
+                                <textarea name="desc" id="message" class="form-control" cols="30" rows="5">
+          {{$project->desc}}
+          </textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Book Rank</label>
+                            <div class="col-lg-10">
+                                <input name="money" class="form-control" value="{{$project->rank}}" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Book published Date</label>
+                            <div class="col-lg-10">
+                                <input type="datetime-local" id="meeting-time" name="date"
+                                    value="{{$project->published_at}}" min="1950-04-24T00:00" max="2030-06-14T00:00">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button type="submit" class="btn btn-success">Update</button>
+                                <a href="/dashboard/home" class="btn btn-danger">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                    @endif
+                </div>
+            </section>
+        </div>
+
+
+    </section>
+</section>
+<!--main content end-->
+
+@endsection
